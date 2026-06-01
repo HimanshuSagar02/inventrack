@@ -1,0 +1,35 @@
+.error-card {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 1.25rem 1.5rem;
+  background: rgba(239, 68, 68, 0.08);
+  border: 1px solid rgba(239, 68, 68, 0.2);
+  border-radius: var(--radius);
+  animation: fadeIn 0.3s ease;
+}
+
+.error-icon {
+  font-size: 1.5rem;
+  flex-shrink: 0;
+}
+
+.error-content {
+  flex: 1;
+}
+
+.error-title {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--danger);
+  margin-bottom: 0.15rem;
+}
+
+.error-message {
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+}
+
+.error-retry {
+  flex-shrink: 0;
+}

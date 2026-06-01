@@ -1,0 +1,259 @@
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.75);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  display: flex;
+  justify-content: center;
+  align-items: center; /* Center the modal in the viewport */
+  z-index: 5000;
+  padding: 2rem 1rem;
+  animation: overlayFadeIn 0.2s ease;
+}
+
+@keyframes overlayFadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.modal-card {
+  background: linear-gradient(145deg, rgba(22, 33, 62, 0.98), rgba(26, 26, 46, 0.98));
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: var(--radius-lg);
+  box-shadow:
+    0 24px 80px rgba(0, 0, 0, 0.6),
+    0 0 0 1px rgba(255, 255, 255, 0.08) inset;
+  width: 100%;
+  max-width: 560px;
+  max-height: 80vh; /* Capped slightly lower to emphasize bottom side positioning */
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  align-self: center;
+  animation: modalSlideUp 0.35s cubic-bezier(0.16, 1, 0.3, 1); /* Smooth slide up transition */
+}
+
+@keyframes modalSlideUp {
+  from {
+    opacity: 0;
+    transform: translateY(120px) scale(0.96);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.modal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1.25rem 1.5rem;
+  border-bottom: 1px solid var(--border);
+}
+
+.modal-title {
+  font-size: 1.15rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  letter-spacing: -0.01em;
+}
+
+.modal-close {
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-secondary);
+  font-size: 0.85rem;
+  transition: all var(--transition);
+  flex-shrink: 0;
+}
+
+.modal-close:hover {
+  background: rgba(239, 68, 68, 0.15);
+  color: var(--danger);
+}
+
+.modal-body {
+  padding: 1.5rem;
+  overflow-y: auto;
+  flex: 1;
+}
+
+/* Scoped form improvements for modal content to ensure inputs are visible
+   and the form layout remains usable on all viewports. */
+.modal-card form {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  min-width: 0; /* prevent overflowing children from breaking layout */
+}
+
+.modal-card input,
+.modal-card select,
+.modal-card textarea {
+  background: var(--bg-input);
+  border: 1px solid var(--border-light);
+  color: var(--text-primary);
+  padding: 0.65rem 0.9rem;
+  border-radius: var(--radius-sm);
+  font-size: 0.95rem;
+  width: 100%;
+  box-shadow: none;
+}
+
+.modal-card input:focus,
+.modal-card select:focus,
+.modal-card textarea:focus {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 4px var(--accent-glow);
+}
+
+/* Keep the form actions pinned to the bottom of the modal body when space allows */
+.modal-card .form-actions {
+  margin-top: auto;
+  padding-top: 1rem;
+  border-top: 1px solid var(--border);
+}
+
+/* Ensure image upload preview fits inside modal */
+.modal-card .image-upload-area {
+  height: 140px;
+}
+.modal-card .image-preview {
+  max-height: 140px;
+  width: 100%;
+  object-fit: cover;
+}
+
+/* ── Form styles inside modals ── */
+.form-group {
+  margin-bottom: 1.25rem;
+}
+
+.form-group label {
+  display: block;
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  margin-bottom: 0.5rem;
+}
+
+.form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+}
+
+.form-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.75rem;
+  margin-top: 1.5rem;
+  padding-top: 1.25rem;
+  border-top: 1px solid var(--border);
+}
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.65rem 1.25rem;
+  border-radius: var(--radius-sm);
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+  border: none;
+  transition: all var(--transition);
+  white-space: nowrap;
+}
+
+.btn:active {
+  transform: scale(0.97);
+}
+
+.btn-primary {
+  background: linear-gradient(135deg, var(--accent), #0284c7);
+  color: #fff;
+  box-shadow: 0 4px 14px rgba(14, 165, 233, 0.3);
+}
+
+.btn-primary:hover {
+  background: linear-gradient(135deg, var(--accent-hover), #0ea5e9);
+  box-shadow: 0 6px 20px rgba(14, 165, 233, 0.4);
+  transform: translateY(-1px);
+}
+
+.btn-secondary {
+  background: rgba(255, 255, 255, 0.06);
+  color: var(--text-secondary);
+  border: 1px solid var(--border-light);
+}
+
+.btn-secondary:hover {
+  background: rgba(255, 255, 255, 0.1);
+  color: var(--text-primary);
+}
+
+.btn-danger {
+  background: linear-gradient(135deg, var(--danger), #dc2626);
+  color: #fff;
+  box-shadow: 0 4px 14px rgba(239, 68, 68, 0.3);
+}
+
+.btn-danger:hover {
+  box-shadow: 0 6px 20px rgba(239, 68, 68, 0.4);
+  transform: translateY(-1px);
+}
+
+.btn-sm {
+  padding: 0.4rem 0.75rem;
+  font-size: 0.78rem;
+}
+
+.btn-icon {
+  padding: 0.4rem;
+  width: 32px;
+  height: 32px;
+}
+
+/* ── Tablet (769–1024px) ── */
+@media (max-width: 1024px) {
+  .modal-card { max-width: 520px; }
+}
+
+/* ── Mobile (≤ 768px) ── */
+@media (max-width: 768px) {
+  .modal-overlay {
+    align-items: flex-end;
+    padding: 0;
+  }
+  .modal-card {
+    max-width: 100%;
+    max-height: 92dvh;
+    width: 100%;
+    border-radius: var(--radius-lg) var(--radius-lg) 0 0;
+    margin: 0;
+    padding-bottom: env(safe-area-inset-bottom, 0);
+  }
+  .modal-body    { padding: 1.1rem; }
+  .modal-header  { padding: 1rem 1.1rem; }
+  .form-row      { grid-template-columns: 1fr; }
+  .form-actions  { flex-direction: column-reverse; gap: 0.5rem; }
+  .form-actions .btn { width: 100%; justify-content: center; }
+}
+
+/* ── Very small (≤ 480px) ── */
+@media (max-width: 480px) {
+  .modal-title   { font-size: 1rem; }
+  .modal-body    { padding: 0.9rem; }
+}
