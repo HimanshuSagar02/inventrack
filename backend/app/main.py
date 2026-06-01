@@ -13,13 +13,13 @@ from app.database import Base, engine  # noqa: E402
 from app.routers import analytics, customers, orders, products  # noqa: E402
 
 UPLOAD_DIR = "/app/uploads"
+os.makedirs(UPLOAD_DIR, exist_ok=True)
 
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     """Create database tables, run safe migrations, and create upload directory on startup."""
     Base.metadata.create_all(bind=engine)
-    os.makedirs(UPLOAD_DIR, exist_ok=True)
 
     # Safe migration: add image_url column if it doesn't exist (idempotent)
     from sqlalchemy import text
