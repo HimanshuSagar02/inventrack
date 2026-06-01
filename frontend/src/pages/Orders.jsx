@@ -21,6 +21,9 @@ function Orders() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
+  // Search state
+  const [searchQuery, setSearchQuery] = useState('');
+
   // Create order modal
   const [createOpen, setCreateOpen] = useState(false);
   const [selectedCustomer, setSelectedCustomer] = useState('');
@@ -194,6 +197,22 @@ function Orders() {
     },
   ];
 
+  const filteredOrders = orders.filter((o) => {
+    const query = searchQuery.toLowerCase().trim();
+    if (!query) return true;
+
+    const orderIdStr = o.id?.toString() || '';
+    const matchesId = orderIdStr.includes(query) || `#${orderIdStr}`.includes(query);
+
+    const matchesCustomer =
+      o.customer?.full_name?.toLowerCase().includes(query) ||
+      o.customer?.email?.toLowerCase().includes(query);
+
+    const matchesTotal = o.total_amount?.toString().includes(query);
+
+    return matchesId || matchesCustomer || matchesTotal;
+  });
+
   if (loading) return <LoadingSpinner text="Loading orders..." />;
   if (error) return <ErrorMessage message={error} onRetry={fetchOrders} />;
 
@@ -209,10 +228,28 @@ function Orders() {
         </button>
       </div>
 
+      <div className="table-toolbar">
+        <div className="search-box">
+          <span className="search-icon">🔍</span>
+          <input
+            type="text"
+            placeholder="Search by customer, email, order #..."
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            className="search-input"
+          />
+          {searchQuery && (
+            <button className="search-clear" type="button" onClick={() => setSearchQuery('')}>
+              ✕
+            </button>
+          )}
+        </div>
+      </div>
+
       <DataTable
         columns={columns}
-        data={orders}
-        emptyMessage="No orders yet. Create your first order!"
+        data={filteredOrders}
+        emptyMessage="No orders match your search."
         actions={(row) => (
           <>
             <button className="action-btn action-btn-view" onClick={() => openView(row)}>

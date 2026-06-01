@@ -32,6 +32,9 @@ function Products() {
   const [imgSize, setImgSize] = useState(null);
   const imgRef = useRef(null);
 
+  // Search state
+  const [searchQuery, setSearchQuery] = useState('');
+
   const openLightbox = (product) => {
     if (!product.image_url) return;
     setLightbox({
@@ -260,6 +263,17 @@ function Products() {
     },
   ];
 
+  const filteredProducts = products.filter((p) => {
+    const query = searchQuery.toLowerCase().trim();
+    if (!query) return true;
+    return (
+      p.name?.toLowerCase().includes(query) ||
+      p.sku?.toLowerCase().includes(query) ||
+      p.price?.toString().includes(query) ||
+      p.quantity?.toString().includes(query)
+    );
+  });
+
   if (loading) return <LoadingSpinner text="Loading products..." />;
   if (error) return <ErrorMessage message={error} onRetry={fetchProducts} />;
 
@@ -275,10 +289,28 @@ function Products() {
         </button>
       </div>
 
+      <div className="table-toolbar">
+        <div className="search-box">
+          <span className="search-icon">🔍</span>
+          <input
+            type="text"
+            placeholder="Search by name, SKU, price..."
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            className="search-input"
+          />
+          {searchQuery && (
+            <button className="search-clear" type="button" onClick={() => setSearchQuery('')}>
+              ✕
+            </button>
+          )}
+        </div>
+      </div>
+
       <DataTable
         columns={columns}
-        data={products}
-        emptyMessage="No products yet. Add your first product!"
+        data={filteredProducts}
+        emptyMessage="No products match your search."
         actions={(row) => (
           <>
             {row.image_url && (
