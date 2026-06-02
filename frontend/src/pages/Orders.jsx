@@ -298,7 +298,7 @@ function Orders() {
                   <div className="item-image-preview">
                     {selectedProduct?.image_url ? (
                       <img
-                        src={`${BASE_URL}${selectedProduct.image_url}`}
+                        src={selectedProduct.image_url.startsWith('http') ? selectedProduct.image_url : `${BASE_URL}${selectedProduct.image_url}`}
                         alt={selectedProduct.name}
                         className="order-product-thumb"
                         onError={(e) => { e.target.style.display = 'none'; e.target.nextSibling.style.display = 'flex'; }}
@@ -420,7 +420,7 @@ function Orders() {
                     <div className="detail-item-image">
                       {item.product?.image_url ? (
                         <img
-                          src={`${BASE_URL}${item.product.image_url}`}
+                          src={item.product.image_url.startsWith('http') ? item.product.image_url : `${BASE_URL}${item.product.image_url}`}
                           alt={item.product?.name}
                           className="detail-product-thumb"
                           onError={(e) => { e.target.style.display='none'; }}

@@ -148,7 +148,7 @@ function LowStock() {
                 <div className="ls-card-image">
                   {product.image_url ? (
                     <img
-                      src={`${BASE_URL}${product.image_url}`}
+                      src={product.image_url.startsWith('http') ? product.image_url : `${BASE_URL}${product.image_url}`}
                       alt={product.name}
                       className="ls-product-img"
                       onError={(e) => {

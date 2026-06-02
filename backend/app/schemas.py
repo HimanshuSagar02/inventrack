@@ -13,6 +13,7 @@ class ProductCreate(BaseModel):
     sku: str
     price: float = Field(..., gt=0)
     quantity: int = Field(0, ge=0)
+    image_url: Optional[str] = None
 
 
 class ProductUpdate(BaseModel):
@@ -20,6 +21,7 @@ class ProductUpdate(BaseModel):
     sku: Optional[str] = None
     price: Optional[float] = Field(None, gt=0)
     quantity: Optional[int] = Field(None, ge=0)
+    image_url: Optional[str] = None
 
 
 class ProductResponse(BaseModel):

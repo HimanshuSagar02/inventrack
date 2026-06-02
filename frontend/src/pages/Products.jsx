@@ -9,7 +9,7 @@ import LoadingSpinner from '../components/LoadingSpinner';
 import ErrorMessage from '../components/ErrorMessage';
 import './Products.css';
 
-const emptyForm = { name: '', sku: '', price: '', quantity: '' };
+const emptyForm = { name: '', sku: '', price: '', quantity: '', image_url: '' };
 
 function Products() {
   const [products, setProducts] = useState([]);
@@ -38,7 +38,7 @@ function Products() {
   const openLightbox = (product) => {
     if (!product.image_url) return;
     setLightbox({
-      url: `${BASE_URL}${product.image_url}`,
+      url: product.image_url.startsWith('http') ? product.image_url : `${BASE_URL}${product.image_url}`,
       name: product.name,
       sku: product.sku,
     });
@@ -106,9 +106,10 @@ function Products() {
       sku: product.sku || '',
       price: product.price?.toString() || '',
       quantity: product.quantity?.toString() || '',
+      image_url: product.image_url || '',
     });
     setImageFile(null);
-    setImagePreview(product.image_url ? `${BASE_URL}${product.image_url}` : null);
+    setImagePreview(product.image_url ? (product.image_url.startsWith('http') ? product.image_url : `${BASE_URL}${product.image_url}`) : null);
     setModalOpen(true);
   };
 
@@ -159,6 +160,7 @@ function Products() {
       sku: form.sku.trim(),
       price: parseFloat(form.price),
       quantity: parseInt(form.quantity, 10),
+      image_url: form.image_url.trim() || null,
     };
 
     setSubmitting(true);
@@ -231,7 +233,7 @@ function Products() {
           {val ? (
             <div className="product-thumb-wrapper" onClick={() => openLightbox(row)} title="Click to view full image">
               <img
-                src={`${BASE_URL}${val}`}
+                src={val.startsWith('http') ? val : `${BASE_URL}${val}`}
                 alt={row.name}
                 className="product-thumb"
                 onError={(e) => { e.target.style.display = 'none'; }}
@@ -372,6 +374,18 @@ function Products() {
             style={{ display: 'none' }}
             onChange={handleImageChange}
           />
+
+          <div className="form-group">
+            <label htmlFor="image_url">Or Paste Image URL (e.g. from imgur/postimg)</label>
+            <input
+              id="image_url"
+              name="image_url"
+              type="text"
+              placeholder="https://example.com/image.jpg"
+              value={form.image_url}
+              onChange={handleChange}
+            />
+          </div>
 
           <div className="form-group">
             <label htmlFor="name">Product Name</label>
